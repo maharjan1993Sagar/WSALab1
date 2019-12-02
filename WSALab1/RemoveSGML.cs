@@ -13,7 +13,7 @@ namespace WSALab1
         public static string Remove(string filepath)
         {
             string Text = File.ReadAllText(filepath);
-           return Regex.Replace(Text, "<.*?>", String.Empty);
+           return Regex.Replace(Text, @"<.*?>", String.Empty).Trim();
            
         }
     }

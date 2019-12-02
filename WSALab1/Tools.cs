@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace WSALab1
@@ -26,18 +27,31 @@ namespace WSALab1
                 endPos = trimmedLine.IndexOfAny(delimiters, startPos);
                 if (endPos - startPos > 0)
                 {
-                    subString = trimmedLine.Substring(startPos, endPos - startPos);
+                    subString = trimmedLine.Substring(startPos, endPos - startPos).Trim();
                     tokenizedList.Add(subString);
                 }
                 else if (endPos - startPos == 0)
                 {
-                    subString = trimmedLine.Substring(startPos, 1);
+                    subString = trimmedLine.Substring(startPos, 1).Trim();
                     tokenizedList.Add(subString);
                 }
                 startPos = endPos + 1;
             }
+            for (int i = 0; i < tokenizedList.Count; i++)
+            {
+                if (Regex.IsMatch(tokenizedList[i], @"^[a-zA-Z0-9_]+$"))
+                {
+                   if (tokenizedList[i].Contains('.'))
+                        tokenizedList[i].Replace(".", string.Empty);
+                }
+                else 
+                    tokenizedList.Remove(tokenizedList[i]);
 
-            tokens = tokenizedList.ToArray();
+                
+            }
+            
+
+            tokens = tokenizedList.ToArray().Where(x => !string.IsNullOrEmpty(x)).ToArray(); ;
 
             return tokens;
 
